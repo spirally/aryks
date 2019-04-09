@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('available', models.BinaryField(default=True, verbose_name='Доступен')),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to='shop.Category', verbose_name='Категория')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to='infoshop.Category', verbose_name='Категория')),
             ],
             options={
                 'ordering': ['name'],

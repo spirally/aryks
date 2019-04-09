@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('shop', '0003_auto_20160724_0743'),
+        ('infoshop', '0003_auto_20160724_0743'),
     ]
 
     operations = [
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Цена')),
                 ('quantity', models.PositiveIntegerField(default=1, verbose_name='Количество')),
                 ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='orders.Order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_items', to='shop.Product')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_items', to='infoshop.Product')),
             ],
         ),
     ]

@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from shop.models import Product
+from infoshop.models import Product
 from cupons.models import Cupon
 
 

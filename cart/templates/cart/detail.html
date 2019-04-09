@@ -1,4 +1,4 @@
-{% extends "shop/base.html" %}
+{% extends "infoshop/base.html" %}
 
 {% block title %}
   Ваша корзина товаров
@@ -69,7 +69,7 @@
     <input type="submit" value="Обновить">
   </form>
   <p class="text-right">
-    <a href="{% url "shop:ProductList"%}" class="btn btn-light">Продолжить Шопинг</a>
+    <a href="{% url "infoshop:ProductList"%}" class="btn btn-light">Продолжить Шопинг</a>
     <a href="{% url "orders:OrderCreate" %}" class="btn">Оформить заказ</a>
   </p>
 {% endblock %}

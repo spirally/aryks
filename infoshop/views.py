@@ -11,7 +11,7 @@ def ProductList(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(Category, alias=category_slug)
         products = products.filter(category=category)
-    return render(request, 'shop/product/list.html', {
+    return render(request, 'infoshop/product/list.html', {
         'category': category,
         'categories': categories,
         'products': products
@@ -21,6 +21,6 @@ def ProductList(request, category_slug=None):
 def ProductDetail(request, id, alias):
     product = get_object_or_404(Product, id=id, alias=alias, available=True)
     cart_product_form = CartAddProductForm()
-    return render(request, 'shop/product/detail.html',
+    return render(request, 'infoshop/product/detail.html',
                              {'product': product,
                               'cart_product_form': cart_product_form})
