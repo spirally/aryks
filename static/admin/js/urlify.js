@@ -133,9 +133,9 @@
         }
     };
 
-    function downcode(slug) {
+    function downcode(alias) {
         Downcoder.Initialize();
-        return slug.replace(Downcoder.regex, function(m) {
+        return alias.replace(Downcoder.regex, function(m) {
             return Downcoder.map[m];
         });
     }

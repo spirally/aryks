@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(db_index=True, max_length=200)),
-                ('slug', models.SlugField(max_length=200, unique=True)),
+                ('alias', models.SlugField(max_length=200, unique=True)),
             ],
             options={
                 'verbose_name': 'Категория',
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(db_index=True, max_length=200, verbose_name='Название')),
-                ('slug', models.SlugField(max_length=200)),
+                ('alias', models.SlugField(max_length=200)),
                 ('image', models.ImageField(blank=True, upload_to='products/%Y/%m/%d/', verbose_name='Изображение товара')),
                 ('description', models.TextField(blank=True, verbose_name='Описание')),
                 ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Цена')),
@@ -48,6 +48,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterIndexTogether(
             name='product',
-            index_together=set([('id', 'slug')]),
+            index_together=set([('id', 'alias')]),
         ),
     ]

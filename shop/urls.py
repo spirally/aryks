@@ -6,5 +6,5 @@ app_name = 'shop'
 urlpatterns = [
     url(r'^$', views.ProductList, name='ProductList'),
     url(r'^(?P<category_slug>[-\w]+)/$', views.ProductList, name='ProductListByCategory'),
-    url(r'^(?P<id>\d+)/(?P<slug>[-\w]+)/$', views.ProductDetail, name='ProductDetail'),
+    url(r'^(?P<id>\d+)/(?P<alias>[-\w]+)/$', views.ProductDetail, name='ProductDetail'),
 ]
