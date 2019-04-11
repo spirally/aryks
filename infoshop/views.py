@@ -4,12 +4,12 @@ from cart.forms import CartAddProductForm
 
 
 # Страница с товарами
-def ProductList(request, category_slug=None):
+def ProductList(request, category_alias=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.filter(available=True)
-    if category_slug:
-        category = get_object_or_404(Category, alias=category_slug)
+    if category_alias:
+        category = get_object_or_404(Category, alias=category_alias)
         products = products.filter(category=category)
     return render(request, 'infoshop/product/list.html', {
         'category': category,
