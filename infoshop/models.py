@@ -1,16 +1,48 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.urls import reverse
+
+from slytools.utils.web import WebPageMixin
 from slytools.utils.db import IsDeletedModel
 
 
-class Category(IsDeletedModel):
+# class OwnerType(dict):
+#     AUTHOR = 1
+#     SCHOOL = 2
+#
+# OWNER_TYPES = OwnerType({
+#     OwnerType.AUTHOR: _(u"Автор"),
+#     OwnerType.SCHOOL: _(u"Школа"),
+# })
+
+
+class Owner(IsDeletedModel):
+    """
+    Владелец продукта
+    """
+    name = models.CharField(max_length=250, db_index=True, verbose_name=_("Имя"))
+    description = models.TextField(blank=True, verbose_name=_('Описание'))
+    # type = models.PositiveSmallIntegerField(choices=OWNER_TYPES.items(), verbose_name=_("Тип"))
+
+
+class School(WebPageMixin, Owner):
+    pass
+
+
+class Author(WebPageMixin, Owner):
+    parent = models.ForeignKey(School, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('Школа'))
+
+
+class ProductCategory(WebPageMixin, IsDeletedModel):
     """
     Категория каталога
     """
     name = models.CharField(max_length=200, db_index=True, verbose_name=_('Имя'))
-    alias = models.SlugField(max_length=200, db_index=True, unique=True)
-    parent = models.ForeignKey("Category", on_delete=models.CASCADE, null=True, blank=True)
+    parent = models.ForeignKey("ProductCategory", on_delete=models.CASCADE, null=True, blank=True)
+
+    @property
+    def children(self):
+        return ProductCategory.objects.filter(parent=self)
 
     class Meta:
         ordering = ['name']
@@ -24,22 +56,17 @@ class Category(IsDeletedModel):
         return reverse('infoshop:ProductListByCategory', args=[self.alias])
 
 
-
-class Product(IsDeletedModel):
+class Product(WebPageMixin, IsDeletedModel):
     """
     Инфопродукт
     """
     #TODO ManyToMany category
-    category = models.ForeignKey(Category, related_name='products', verbose_name=_("Категория"), on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, db_index=True, verbose_name=_("Название"))
-    alias = models.SlugField(max_length=200, db_index=True)
-    image = models.ImageField(upload_to='products/%Y/%m/%d/', blank=True, verbose_name=_("Изображение товара"))
+    category = models.ForeignKey(ProductCategory, related_name='products', verbose_name=_("Категория"), on_delete=models.CASCADE)
+    name = models.CharField(max_length=250, db_index=True, verbose_name=_("Название"))
+    image = models.ImageField(upload_to='products/%Y/%m/%d/', blank=True, verbose_name=_("Изображение"))
     description = models.TextField(blank=True, verbose_name=_("Описание"))
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Цена"))
     price_new = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Новая цена"))
-    available = models.BooleanField(default=True, verbose_name=_("Доступен"))
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Создан'))
-    updated = models.DateTimeField(auto_now=True, verbose_name=_('Обновлен'))
 
     class Meta:
         ordering = ['name']
