@@ -2,13 +2,11 @@ from django.contrib import admin
 from .models import ProductCategory, Product
 
 
-# Модель категории
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'alias']
     prepopulated_fields = {'alias': ('name', )}
 
 
-# Модель товара
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'alias', 'price', 'price_new', 'created', 'updated',]
     list_filter = ['created', 'updated',]

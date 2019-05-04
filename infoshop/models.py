@@ -62,16 +62,25 @@ class Product(WebPageMixin, IsDeletedModel):
     """
     #TODO ManyToMany category
     category = models.ForeignKey(ProductCategory, related_name='products', verbose_name=_("Категория"), on_delete=models.CASCADE)
+    owner = models.ForeignKey(Owner, null=True, on_delete=models.CASCADE, verbose_name=_('Автор'))
     name = models.CharField(max_length=250, db_index=True, verbose_name=_("Название"))
     image = models.ImageField(upload_to='products/%Y/%m/%d/', blank=True, verbose_name=_("Изображение"))
+    introtext = models.TextField(blank=True, verbose_name=_("Вводный текст"))
     description = models.TextField(blank=True, verbose_name=_("Описание"))
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Цена"))
-    price_new = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Новая цена"))
+    price = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2, verbose_name=_("Цена"))
+    price_new = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2, verbose_name=_("Новая цена"))
+    type_video = models.BooleanField(default=False, verbose_name=_('Смотреть'))
+    type_audio = models.BooleanField(default=False, verbose_name=_('Слушать'))
+    type_book = models.BooleanField(default=False, verbose_name=_('Читать'))
+    type_flow = models.BooleanField(default=False, verbose_name=_('Участвовать'))
 
     class Meta:
         ordering = ['name']
         index_together = [
             ['id', 'alias']
+        ]
+        unique_together = [
+            ('category', 'alias'),
         ]
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
